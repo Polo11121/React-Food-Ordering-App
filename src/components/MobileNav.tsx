@@ -10,14 +10,16 @@ import {
   SheetTrigger,
 } from "@/components/ui";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useLocation } from "react-router-dom";
 
 export const MobileNav = () => {
+  const location = useLocation();
   const { isAuthenticated, loginWithRedirect, user } = useAuth0();
 
   const loginHandler = async () => await loginWithRedirect();
 
   return (
-    <Sheet>
+    <Sheet key={location.pathname}>
       <SheetTrigger>
         <Menu className="text-orange-500" />
       </SheetTrigger>

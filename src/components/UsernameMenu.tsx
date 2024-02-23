@@ -8,22 +8,23 @@ import {
 } from "@/components/ui";
 import { useAuth0 } from "@auth0/auth0-react";
 import { CircleUserRound } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export const UsernameMenu = () => {
+  const location = useLocation();
   const { user, logout } = useAuth0();
 
   const logoutHandler = () => logout();
 
   return (
-    <DropdownMenu>
+    <DropdownMenu key={location.pathname}>
       <DropdownMenuTrigger className="flex items-center px-3 font-bold hover:text-orange-500 gap-2">
         <CircleUserRound className="text-orange-500" />
         {user?.email}
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem>
-          <Link to="/user-profile" className="font-bold hover:text-orange-500">
+          <Link className="font-bold hover:text-orange-500" to="/user-profile">
             User Profile
           </Link>
         </DropdownMenuItem>

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   UpdateUserSchema,
   updateUserSchema,
@@ -14,22 +15,35 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  Skeleton,
 } from "@/components/ui";
+import { User } from "@/types";
 
 type UserProfileFormProps = {
   onSubmit: (data: UpdateUserSchema) => void;
   isLoading: boolean;
+  user?: User;
 };
 
 export const UserProfileForm = ({
   onSubmit,
   isLoading,
+  user,
 }: UserProfileFormProps) => {
   const form = useForm<UpdateUserSchema>({
     resolver: zodResolver(updateUserSchema),
+    defaultValues: {
+      ...user,
+    },
   });
 
   const submitHandler = form.handleSubmit(onSubmit);
+
+  useEffect(() => {
+    if (user) {
+      form.reset(user);
+    }
+  }, [user, form]);
 
   return (
     <Form {...form}>
@@ -118,3 +132,37 @@ export const UserProfileForm = ({
     </Form>
   );
 };
+
+export const UserProfileSkeleton = () => (
+  <div className="space-y-4 bg-gray-50 rounded-lg md:p-10">
+    <div className="space-y-3">
+      <div className="space-y-2">
+        <Skeleton className="h-8 w-52" />
+        <Skeleton className="h-5 w-72" />
+      </div>
+      <div className="space-y-2">
+        <Skeleton className="h-5 w-10" />
+        <Skeleton className="h-9" />
+      </div>
+      <div className="space-y-2">
+        <Skeleton className="h-5 w-10" />
+        <Skeleton className="h-9" />
+      </div>
+      <div className="flex flex-col md:flex-row gap-4 w-full">
+        <div className="space-y-2 flex-1">
+          <Skeleton className="h-5 w-20" />
+          <Skeleton className="h-9" />
+        </div>
+        <div className="space-y-2 flex-1">
+          <Skeleton className="h-5 w-9" />
+          <Skeleton className="h-9" />
+        </div>
+        <div className="space-y-2 flex-1">
+          <Skeleton className="h-5 w-12" />
+          <Skeleton className="h-9" />
+        </div>
+      </div>
+      <Skeleton className="h-9 w-20" />
+    </div>
+  </div>
+);

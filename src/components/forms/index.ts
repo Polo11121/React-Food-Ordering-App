@@ -1,1 +1,4 @@
-export { UserProfileForm } from "@/components/forms/UserProfileForm";
+export {
+  UserProfileForm,
+  UserProfileSkeleton,
+} from "@/components/forms/UserProfileForm";
