@@ -1,26 +1,18 @@
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui";
-import { useAuth0 } from "@auth0/auth0-react";
+import { LogoutButton } from "@/components";
+import { NAVBAR_LINKS } from "@/lib/links";
 
-export const MobileNavLinks = () => {
-  const { logout } = useAuth0();
-
-  const logoutHandler = () => logout();
-
-  return (
-    <>
+export const MobileNavLinks = () => (
+  <>
+    {NAVBAR_LINKS.map(({ label, path }) => (
       <Link
-        to="/user-profile"
+        key={path}
+        to={path}
         className="flex bg-white items-center font-bold hover:text-orange-500"
       >
-        User Profile
+        {label}
       </Link>
-      <Button
-        onClick={logoutHandler}
-        className="flex items-center px-3 font-bold hover:bg-gray-500"
-      >
-        Log Out
-      </Button>
-    </>
-  );
-};
+    ))}
+    <LogoutButton className="flex items-center px-3 font-bold hover:bg-gray-500" />
+  </>
+);

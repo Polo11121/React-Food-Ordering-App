@@ -1,4 +1,5 @@
 export { Button, buttonVariants } from "@/components/ui/Button";
+export { Checkbox } from "@/components/ui/Checkbox";
 export * from "@/components/ui/Dropdown";
 export * from "@/components/ui/Form";
 export { Input } from "@/components/ui/Input";

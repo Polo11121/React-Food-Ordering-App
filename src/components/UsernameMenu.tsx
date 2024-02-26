@@ -1,5 +1,5 @@
+import { Fragment } from "react";
 import {
-  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -9,12 +9,12 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import { CircleUserRound } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { LogoutButton } from "@/components";
+import { NAVBAR_LINKS } from "@/lib/links";
 
 export const UsernameMenu = () => {
   const location = useLocation();
-  const { user, logout } = useAuth0();
-
-  const logoutHandler = () => logout();
+  const { user } = useAuth0();
 
   return (
     <DropdownMenu key={location.pathname}>
@@ -23,19 +23,18 @@ export const UsernameMenu = () => {
         {user?.email}
       </DropdownMenuTrigger>
       <DropdownMenuContent>
+        {NAVBAR_LINKS.map(({ label, path }) => (
+          <Fragment key={path}>
+            <DropdownMenuItem>
+              <Link className="font-bold hover:text-orange-500" to={path}>
+                {label}
+              </Link>
+            </DropdownMenuItem>
+            <Separator />
+          </Fragment>
+        ))}
         <DropdownMenuItem>
-          <Link className="font-bold hover:text-orange-500" to="/user-profile">
-            User Profile
-          </Link>
-        </DropdownMenuItem>
-        <Separator />
-        <DropdownMenuItem>
-          <Button
-            onClick={logoutHandler}
-            className="flex flex-1 font-bold bg-orange-500"
-          >
-            Log out
-          </Button>
+          <LogoutButton className="flex flex-1 font-bold bg-orange-500" />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
