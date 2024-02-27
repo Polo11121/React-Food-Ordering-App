@@ -1,4 +1,5 @@
-import { Button, Form, Separator } from "@/components/ui";
+import { useEffect } from "react";
+import { Button, Form, Separator, Skeleton } from "@/components/ui";
 import {
   ManageRestaurantSchema,
   manageRestaurantSchema,
@@ -13,20 +14,30 @@ import {
   DetailsSectionSkeleton,
   CuisinesSectionSkeleton,
   MenuSectionSkeleton,
+  ImageSectionSkeleton,
 } from "@/components/forms/ManageRestaurantForm";
+import { Restaurant } from "@/types";
+import { UseMutateAsyncFunction } from "@tanstack/react-query";
 
 type ManageRestaurantFormProp = {
-  onSubmit: (data: FormData) => void;
+  onSubmit: UseMutateAsyncFunction<Restaurant, Error, FormData, unknown>;
   isLoading: boolean;
+  restaurant?: Restaurant;
 };
 
 export const ManageRestaurantForm = ({
   onSubmit,
   isLoading,
+  restaurant,
 }: ManageRestaurantFormProp) => {
   const form = useForm<ManageRestaurantSchema>({
     resolver: zodResolver(manageRestaurantSchema),
     defaultValues: {
+      city: "",
+      country: "",
+      deliveryPrice: 0,
+      estimatedDeliveryTime: 0,
+      name: "",
       cuisines: [],
       menuItems: [
         {
@@ -34,37 +45,62 @@ export const ManageRestaurantForm = ({
           price: 0,
         },
       ],
+
+      ...restaurant,
     },
   });
 
-  const submitHandler = form.handleSubmit((data: ManageRestaurantSchema) => {
-    const formData = new FormData();
-
-    formData.append("name", data.name);
-    formData.append("city", data.city);
-    formData.append("country", data.country);
-    formData.append("deliveryPrice", (data.deliveryPrice * 100).toString());
-    formData.append(
-      "estimatedDeliveryTime",
-      data.estimatedDeliveryTime.toString()
-    );
-    data.menuItems.forEach((menuItem, index) => {
-      formData.append(`menuItems[${index}][name]`, menuItem.name);
-      formData.append(
-        `menuItems[${index}][price]`,
-        (menuItem.price * 100).toString()
+  useEffect(() => {
+    if (restaurant) {
+      const deliveryPriceFormatted = parseInt(
+        (restaurant.deliveryPrice / 100).toFixed(2)
       );
-    });
-    data.cuisines.forEach((cuisine) => {
-      formData.append("cuisines[]", cuisine);
-    });
-
-    if (data.imageFile) {
-      formData.append("imageFile", data.imageFile);
+      const menuItemsFormatted = restaurant.menuItems.map(
+        ({ name, price }) => ({
+          name: name,
+          price: parseInt((price / 100).toFixed(2)),
+        })
+      );
+      form.reset({
+        ...restaurant,
+        deliveryPrice: deliveryPriceFormatted,
+        menuItems: menuItemsFormatted,
+      });
     }
+  }, [restaurant, form]);
 
-    onSubmit(formData);
-  });
+  const submitHandler = form.handleSubmit(
+    async (data: ManageRestaurantSchema) => {
+      const formData = new FormData();
+
+      formData.append("name", data.name);
+      formData.append("city", data.city);
+      formData.append("country", data.country);
+      formData.append("deliveryPrice", (data.deliveryPrice * 100).toString());
+      formData.append(
+        "estimatedDeliveryTime",
+        data.estimatedDeliveryTime.toString()
+      );
+      data.menuItems.forEach((menuItem, index) => {
+        formData.append(`menuItems[${index}][name]`, menuItem.name);
+        formData.append(
+          `menuItems[${index}][price]`,
+          (menuItem.price * 100).toString()
+        );
+      });
+      data.cuisines.forEach((cuisine) => {
+        formData.append("cuisines[]", cuisine);
+      });
+
+      if (data.imageFile) {
+        formData.append("imageFile", data.imageFile);
+      }
+
+      await onSubmit(formData);
+    }
+  );
+
+  const isDisabled = !Object.keys(form.formState.dirtyFields).length;
 
   return (
     <Form {...form}>
@@ -79,7 +115,7 @@ export const ManageRestaurantForm = ({
         <MenuSection />
         <Separator />
         <ImageSection />
-        <Button isLoading={isLoading} type="submit">
+        <Button disabled={isDisabled} isLoading={isLoading} type="submit">
           Submit
         </Button>
       </form>
@@ -95,5 +131,7 @@ export const ManageRestaurantFormSkeleton = () => (
     <Separator />
     <MenuSectionSkeleton />
     <Separator />
+    <ImageSectionSkeleton />
+    <Skeleton className="h-9 w-[77px]" />
   </div>
 );

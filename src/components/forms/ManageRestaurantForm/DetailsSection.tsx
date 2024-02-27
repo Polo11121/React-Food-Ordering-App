@@ -4,7 +4,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
   Input,
   Skeleton,
 } from "@/components/ui";
@@ -12,7 +11,7 @@ import { ManageRestaurantSchema } from "@/validationSchemas/manageRestaurant";
 import { useFormContext } from "react-hook-form";
 
 export const DetailsSection = () => {
-  const { control } = useFormContext<ManageRestaurantSchema>();
+  const { control, formState } = useFormContext<ManageRestaurantSchema>();
 
   return (
     <div className="space-y-2">
@@ -27,25 +26,25 @@ export const DetailsSection = () => {
         name="name"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Name</FormLabel>
+            <FormLabel>Name {formState.errors[field.name]?.message}</FormLabel>
             <FormControl>
-              <Input {...field} />
+              <Input {...field} disabled={formState.isSubmitting} />
             </FormControl>
-            <FormMessage />
           </FormItem>
         )}
       />
-      <div className="flex gap-4">
+      <div className="flex gap-4 items-end">
         <FormField
           control={control}
           name="city"
           render={({ field }) => (
             <FormItem className="flex-1">
-              <FormLabel>City</FormLabel>
+              <FormLabel>
+                City {formState.errors[field.name]?.message}
+              </FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} disabled={formState.isSubmitting} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -54,11 +53,12 @@ export const DetailsSection = () => {
           name="country"
           render={({ field }) => (
             <FormItem className="flex-1">
-              <FormLabel>Country</FormLabel>
+              <FormLabel>
+                Country {formState.errors[field.name]?.message}
+              </FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} disabled={formState.isSubmitting} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -67,12 +67,17 @@ export const DetailsSection = () => {
         control={control}
         name="deliveryPrice"
         render={({ field }) => (
-          <FormItem className="max-w-[25%]">
-            <FormLabel>Delivery Price ($)</FormLabel>
-            <FormControl>
-              <Input {...field} placeholder="1.50" />
+          <FormItem>
+            <FormLabel>
+              Delivery Price ($) {formState.errors[field.name]?.message}
+            </FormLabel>
+            <FormControl className="max-w-[25%]">
+              <Input
+                {...field}
+                placeholder="1.50"
+                disabled={formState.isSubmitting}
+              />
             </FormControl>
-            <FormMessage />
           </FormItem>
         )}
       />
@@ -80,12 +85,18 @@ export const DetailsSection = () => {
         control={control}
         name="estimatedDeliveryTime"
         render={({ field }) => (
-          <FormItem className="max-w-[25%]">
-            <FormLabel>Estimated Delivery Price (minutes)</FormLabel>
-            <FormControl>
-              <Input {...field} placeholder="30" />
+          <FormItem>
+            <FormLabel>
+              Estimated Delivery Price (minutes){" "}
+              {formState.errors[field.name]?.message}
+            </FormLabel>
+            <FormControl className="max-w-[25%]">
+              <Input
+                {...field}
+                placeholder="30"
+                disabled={formState.isSubmitting}
+              />
             </FormControl>
-            <FormMessage />
           </FormItem>
         )}
       />

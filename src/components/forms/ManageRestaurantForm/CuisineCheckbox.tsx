@@ -11,9 +11,14 @@ import { ControllerRenderProps } from "react-hook-form";
 type CuisineCheckboxProps = {
   field: ControllerRenderProps<ManageRestaurantSchema, "cuisines">;
   cuisine: string;
+  isDisabled?: boolean;
 };
 
-export const CuisineCheckbox = ({ field, cuisine }: CuisineCheckboxProps) => {
+export const CuisineCheckbox = ({
+  field,
+  cuisine,
+  isDisabled,
+}: CuisineCheckboxProps) => {
   const checkedChangeHandler = (checked: boolean) => {
     if (checked) {
       field.onChange([...field.value, cuisine]);
@@ -26,11 +31,14 @@ export const CuisineCheckbox = ({ field, cuisine }: CuisineCheckboxProps) => {
     <FormItem className="flex flex-row items-center space-x-1 space-y-0 mt-2">
       <FormControl>
         <Checkbox
+          disabled={isDisabled}
           checked={field.value.includes(cuisine)}
           onCheckedChange={checkedChangeHandler}
         />
       </FormControl>
-      <FormLabel className="text-sm font-normal">{cuisine}</FormLabel>
+      <FormLabel className="text-sm font-normal cursor-pointer">
+        {cuisine}
+      </FormLabel>
     </FormItem>
   );
 };

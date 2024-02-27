@@ -4,7 +4,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
   Input,
   Skeleton,
 } from "@/components/ui";
@@ -17,7 +16,7 @@ type MenuItemInputProps = {
 };
 
 export const MenuItemInput = ({ index, onRemoveItem }: MenuItemInputProps) => {
-  const { control } = useFormContext<ManageRestaurantSchema>();
+  const { control, formState } = useFormContext<ManageRestaurantSchema>();
 
   return (
     <div className="flex flex-row items-end gap-2">
@@ -27,11 +26,15 @@ export const MenuItemInput = ({ index, onRemoveItem }: MenuItemInputProps) => {
           name={`menuItems.${index}.name`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="flex items-center gap-1">
-                Name <FormMessage />
+              <FormLabel>
+                Name {formState.errors?.["menuItems"]?.[index]?.name?.message}
               </FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Cheese Pizza" />
+                <Input
+                  {...field}
+                  placeholder="Cheese Pizza"
+                  disabled={formState.isSubmitting}
+                />
               </FormControl>
             </FormItem>
           )}
@@ -42,17 +45,23 @@ export const MenuItemInput = ({ index, onRemoveItem }: MenuItemInputProps) => {
         name={`menuItems.${index}.price`}
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="flex items-center gap-1">
-              Price ($) <FormMessage />
+            <FormLabel>
+              Price ($){" "}
+              {formState.errors?.["menuItems"]?.[index]?.price?.message}
             </FormLabel>
             <FormControl>
-              <Input {...field} placeholder="8.00" />
+              <Input
+                {...field}
+                placeholder="8.00"
+                disabled={formState.isSubmitting}
+              />
             </FormControl>
           </FormItem>
         )}
       />
       <Button
         type="button"
+        disabled={formState.isSubmitting}
         onClick={onRemoveItem}
         className="bg-red-500 max-h-fit"
       >

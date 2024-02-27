@@ -8,7 +8,7 @@ export const UserProfilePage = () => {
     isFetchedAfterMount,
     isRefetching,
   } = useGetMyUser();
-  const { mutate: updateMyUser, isPending } = useUpdateMyUser();
+  const { mutateAsync, isPending } = useUpdateMyUser();
 
   if (isLoading || !isFetchedAfterMount) {
     return <UserProfileSkeleton />;
@@ -20,7 +20,7 @@ export const UserProfilePage = () => {
 
   return (
     <UserProfileForm
-      onSubmit={updateMyUser}
+      onSubmit={mutateAsync}
       isLoading={isPending || isRefetching}
       user={myUser}
     />

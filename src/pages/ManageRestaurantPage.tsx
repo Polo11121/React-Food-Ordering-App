@@ -1,15 +1,33 @@
-import { useCreateMyRestaurant } from "@/api/MyRestaurantApi";
+import {
+  useCreateMyRestaurant,
+  useGetMyRestaurant,
+  useUpdateMyRestaurant,
+} from "@/api/MyRestaurantApi";
 import {
   ManageRestaurantForm,
   ManageRestaurantFormSkeleton,
 } from "@/components/forms/ManageRestaurantForm";
 
 export const ManageRestaurantPage = () => {
-  const { mutate, isPending } = useCreateMyRestaurant();
+  const {
+    data: restaurant,
+    isLoading,
+    isFetchedAfterMount,
+    isRefetching,
+  } = useGetMyRestaurant();
+  const { mutateAsync, isPending } = (
+    restaurant ? useUpdateMyRestaurant : useCreateMyRestaurant
+  )();
 
-  if (false) {
+  if (isLoading || !isFetchedAfterMount) {
     return <ManageRestaurantFormSkeleton />;
   }
 
-  return <ManageRestaurantForm isLoading={isPending} onSubmit={mutate} />;
+  return (
+    <ManageRestaurantForm
+      restaurant={restaurant}
+      isLoading={isPending || isRefetching}
+      onSubmit={mutateAsync}
+    />
+  );
 };

@@ -14,7 +14,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { ManageRestaurantSchema } from "@/validationSchemas/manageRestaurant";
 
 export const MenuSection = () => {
-  const { control } = useFormContext<ManageRestaurantSchema>();
+  const { control, formState } = useFormContext<ManageRestaurantSchema>();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -40,14 +40,24 @@ export const MenuSection = () => {
               const removeHandler = () => remove(index);
 
               return (
-                <MenuItemInput index={index} onRemoveItem={removeHandler} />
+                <MenuItemInput
+                  key={index}
+                  index={index}
+                  onRemoveItem={removeHandler}
+                />
               );
             })}
-            {!fields.length && <FormMessage />}
           </FormItem>
         )}
       />
-      <Button type="button" onClick={addHandler}>
+      {!fields.length && formState.isSubmitted && (
+        <FormMessage>Please add at least one menu item</FormMessage>
+      )}
+      <Button
+        disabled={formState.isSubmitting}
+        type="button"
+        onClick={addHandler}
+      >
         Add Menu Item
       </Button>
     </div>

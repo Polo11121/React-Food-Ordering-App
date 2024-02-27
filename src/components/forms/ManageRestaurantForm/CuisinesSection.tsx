@@ -14,7 +14,7 @@ import {
 } from "@/components/forms/ManageRestaurantForm";
 
 export const CuisinesSection = () => {
-  const { control } = useFormContext<ManageRestaurantSchema>();
+  const { control, formState } = useFormContext<ManageRestaurantSchema>();
 
   return (
     <div className="space-y-2">
@@ -32,6 +32,7 @@ export const CuisinesSection = () => {
             <div className="grid md:grid-cols-5 gap-1">
               {cuisineList.map((cuisine) => (
                 <CuisineCheckbox
+                  isDisabled={formState.isSubmitting}
                   key={cuisine}
                   cuisine={cuisine}
                   field={field}
@@ -52,7 +53,7 @@ export const CuisinesSectionSkeleton = () => (
       <Skeleton className="h-8 w-24" />
       <Skeleton className="h-5 w-56" />
     </div>
-    <div className="grid md:grid-cols-5 gap-1">
+    <div className="grid md:grid-cols-5 gap-x-1 gap-y-3">
       {cuisineList.map((cuisine) => (
         <CuisineCheckboxSkeleton key={cuisine} />
       ))}

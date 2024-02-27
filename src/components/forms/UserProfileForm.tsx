@@ -13,14 +13,28 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
   Input,
   Skeleton,
 } from "@/components/ui";
 import { User } from "@/types";
+import { UseMutateAsyncFunction } from "@tanstack/react-query";
 
 type UserProfileFormProps = {
-  onSubmit: (data: UpdateUserSchema) => void;
+  onSubmit: UseMutateAsyncFunction<
+    User,
+    Error,
+    Omit<
+      {
+        name: string;
+        addressLine1: string;
+        city: string;
+        country: string;
+        email?: string | undefined;
+      },
+      "email"
+    >,
+    unknown
+  >;
   isLoading: boolean;
   user?: User;
 };
@@ -33,17 +47,26 @@ export const UserProfileForm = ({
   const form = useForm<UpdateUserSchema>({
     resolver: zodResolver(updateUserSchema),
     defaultValues: {
+      name: "",
+      addressLine1: "",
+      city: "",
+      country: "",
+      email: "",
       ...user,
     },
   });
 
-  const submitHandler = form.handleSubmit(onSubmit);
+  const submitHandler = form.handleSubmit(async (data) => {
+    await onSubmit(data);
+  });
 
   useEffect(() => {
     if (user) {
       form.reset(user);
     }
   }, [user, form]);
+
+  const isDisabled = !Object.keys(form.formState.dirtyFields).length;
 
   return (
     <Form {...form}>
@@ -74,11 +97,12 @@ export const UserProfileForm = ({
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>
+                  Name {form.formState.errors[field.name]?.message}
+                </FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} disabled={form.formState.isSubmitting} />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
             control={form.control}
@@ -88,11 +112,12 @@ export const UserProfileForm = ({
               name="addressLine1"
               render={({ field }) => (
                 <FormItem className="flex-1">
-                  <FormLabel>Address Line 1</FormLabel>
+                  <FormLabel>
+                    Address Line 1 {form.formState.errors[field.name]?.message}
+                  </FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} disabled={form.formState.isSubmitting} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
               control={form.control}
@@ -101,11 +126,16 @@ export const UserProfileForm = ({
               name="city"
               render={({ field }) => (
                 <FormItem className="flex-1">
-                  <FormLabel>City</FormLabel>
+                  <FormLabel>
+                    City {form.formState.errors[field.name]?.message}
+                  </FormLabel>
                   <FormControl>
-                    <Input {...field} className="flex-1" />
+                    <Input
+                      {...field}
+                      className="flex-1"
+                      disabled={form.formState.isSubmitting}
+                    />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
               control={form.control}
@@ -114,18 +144,28 @@ export const UserProfileForm = ({
               name="country"
               render={({ field }) => (
                 <FormItem className="flex-1">
-                  <FormLabel>Country</FormLabel>
+                  <FormLabel>
+                    Country {form.formState.errors[field.name]?.message}
+                  </FormLabel>
                   <FormControl>
-                    <Input {...field} className="flex-1" />
+                    <Input
+                      {...field}
+                      className="flex-1"
+                      disabled={form.formState.isSubmitting}
+                    />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
               control={form.control}
             />
           </div>
         </div>
-        <Button type="submit" isLoading={isLoading} className="bg-orange-500">
+        <Button
+          disabled={isDisabled}
+          type="submit"
+          isLoading={isLoading}
+          className="bg-orange-500"
+        >
           Submit
         </Button>
       </form>

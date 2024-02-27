@@ -1,3 +1,4 @@
+export { AspectRatio } from "@/components/ui/AspectRatio";
 export { Button, buttonVariants } from "@/components/ui/Button";
 export { Checkbox } from "@/components/ui/Checkbox";
 export * from "@/components/ui/Dropdown";
