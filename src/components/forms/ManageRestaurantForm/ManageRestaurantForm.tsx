@@ -10,16 +10,18 @@ import {
   DetailsSection,
   MenuSection,
   ImageSection,
-  MenuSectionSkeleton,
-  CuisinesSectionSkeleton,
   DetailsSectionSkeleton,
+  CuisinesSectionSkeleton,
+  MenuSectionSkeleton,
 } from "@/components/forms/ManageRestaurantForm";
 
 type ManageRestaurantFormProp = {
+  onSubmit: (data: FormData) => void;
   isLoading: boolean;
 };
 
 export const ManageRestaurantForm = ({
+  onSubmit,
   isLoading,
 }: ManageRestaurantFormProp) => {
   const form = useForm<ManageRestaurantSchema>({
@@ -35,21 +37,41 @@ export const ManageRestaurantForm = ({
     },
   });
 
-  if (isLoading)
-    return (
-      <div className="space-y-8 bg-gray-50 p-10 rounded-lg">
-        <DetailsSectionSkeleton />
-        <Separator />
-        <CuisinesSectionSkeleton />
-        <Separator />
-        <MenuSectionSkeleton />
-        <Separator />
-      </div>
+  const submitHandler = form.handleSubmit((data: ManageRestaurantSchema) => {
+    const formData = new FormData();
+
+    formData.append("name", data.name);
+    formData.append("city", data.city);
+    formData.append("country", data.country);
+    formData.append("deliveryPrice", (data.deliveryPrice * 100).toString());
+    formData.append(
+      "estimatedDeliveryTime",
+      data.estimatedDeliveryTime.toString()
     );
+    data.menuItems.forEach((menuItem, index) => {
+      formData.append(`menuItems[${index}][name]`, menuItem.name);
+      formData.append(
+        `menuItems[${index}][price]`,
+        (menuItem.price * 100).toString()
+      );
+    });
+    data.cuisines.forEach((cuisine) => {
+      formData.append("cuisines[]", cuisine);
+    });
+
+    if (data.imageFile) {
+      formData.append("imageFile", data.imageFile);
+    }
+
+    onSubmit(formData);
+  });
 
   return (
     <Form {...form}>
-      <form className="space-y-8 bg-gray-50 p-10 rounded-lg">
+      <form
+        onSubmit={submitHandler}
+        className="space-y-8 bg-gray-50 p-10 rounded-lg"
+      >
         <DetailsSection />
         <Separator />
         <CuisinesSection />
@@ -57,8 +79,21 @@ export const ManageRestaurantForm = ({
         <MenuSection />
         <Separator />
         <ImageSection />
-        <Button type="submit">Submit</Button>
+        <Button isLoading={isLoading} type="submit">
+          Submit
+        </Button>
       </form>
     </Form>
   );
 };
+
+export const ManageRestaurantFormSkeleton = () => (
+  <div className="space-y-8 bg-gray-50 p-10 rounded-lg">
+    <DetailsSectionSkeleton />
+    <Separator />
+    <CuisinesSectionSkeleton />
+    <Separator />
+    <MenuSectionSkeleton />
+    <Separator />
+  </div>
+);

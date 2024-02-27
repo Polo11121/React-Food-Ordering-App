@@ -7,7 +7,10 @@ export {
   DetailsSection,
   DetailsSectionSkeleton,
 } from "@/components/forms/ManageRestaurantForm/DetailsSection";
-export { ManageRestaurantForm } from "@/components/forms/ManageRestaurantForm/ManageRestaurantForm";
+export {
+  ManageRestaurantForm,
+  ManageRestaurantFormSkeleton,
+} from "@/components/forms/ManageRestaurantForm/ManageRestaurantForm";
 export { ImageSection } from "@/components/forms/ManageRestaurantForm/ImageSection";
 export {
   MenuItemInput,

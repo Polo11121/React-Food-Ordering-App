@@ -15,7 +15,7 @@ type CreateMyUserRequest = {
 export const useCreateMyUser = () => {
   const { getAccessTokenSilently } = useAuth0();
 
-  const createMyUser = async (request: CreateMyUserRequest) => {
+  const createMyUser = async (request: CreateMyUserRequest): Promise<User> => {
     if (!request.auth0Id || !request.email) {
       throw new Error("Invalid request");
     }
@@ -47,7 +47,9 @@ export const useUpdateMyUser = () => {
   const queryClient = useQueryClient();
   const { getAccessTokenSilently } = useAuth0();
 
-  const updateMyUser = async (formData: Omit<UpdateUserSchema, "email">) => {
+  const updateMyUser = async (
+    formData: Omit<UpdateUserSchema, "email">
+  ): Promise<User> => {
     const accessToken = await getAccessTokenSilently();
 
     const response = await fetch(`${API_BASE_URL}/api/my/user`, {
