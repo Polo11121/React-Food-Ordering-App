@@ -18,7 +18,7 @@ export const Layout = () => {
       <Header />
       <Suspense fallback={<LoadingScreen />}>
         {isMainPage && <Hero />}
-        <div className="container flex-1 py-10">
+        <div className="container py-10 flex flex-col flex-1">
           <Outlet />
         </div>
       </Suspense>

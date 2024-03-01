@@ -2,7 +2,7 @@ import {
   useCreateMyRestaurant,
   useGetMyRestaurant,
   useUpdateMyRestaurant,
-} from "@/api/MyRestaurantApi";
+} from "@/api/myRestaurantApi";
 import {
   ManageRestaurantForm,
   ManageRestaurantFormSkeleton,

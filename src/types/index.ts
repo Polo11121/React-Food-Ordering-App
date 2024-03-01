@@ -29,3 +29,13 @@ export type Restaurant = {
   lastUpdated: string;
   __v: number;
 };
+
+export interface RestaurantSearch {
+  data: Restaurant[];
+  pagination: {
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+  };
+}

@@ -10,7 +10,7 @@ export const HomePage = () => {
 
   return (
     <div className="flex flex-col gap-12">
-      <div className="md:px-6 bg-white rounded-lg shadow-md py-8 flex flex-col gap-5 text-center -mt-16">
+      <div className="md:px-32 bg-white rounded-lg shadow-md py-8 flex flex-col gap-5 text-center -mt-16">
         <h1 className="text-2xl md:text-5xl font-bold tracking-tight text-orange-600">
           Tuck into a takeaway today
         </h1>

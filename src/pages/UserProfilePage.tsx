@@ -1,4 +1,4 @@
-import { useGetMyUser, useUpdateMyUser } from "@/api/MyUserApi";
+import { useGetMyUser, useUpdateMyUser } from "@/api/myUserApi";
 import { UserProfileForm, UserProfileSkeleton } from "@/components/forms";
 
 export const UserProfilePage = () => {

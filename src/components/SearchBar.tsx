@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   SearchRestaurantsSchema,
   searchRestaurantsSchema,
@@ -18,16 +19,21 @@ import classNames from "classnames";
 type SearchBarProps = {
   onSubmit: (formData: SearchRestaurantsSchema) => void;
   placeholder: string;
+  defaultValue?: string;
   onReset?: () => void;
 };
 
 export const SearchBar = ({
   onSubmit,
   placeholder,
+  defaultValue,
   onReset,
 }: SearchBarProps) => {
   const form = useForm<SearchRestaurantsSchema>({
     resolver: zodResolver(searchRestaurantsSchema),
+    defaultValues: {
+      searchQuery: defaultValue,
+    },
   });
 
   const submitHandler = form.handleSubmit(onSubmit);
@@ -39,6 +45,16 @@ export const SearchBar = ({
 
     onReset?.();
   };
+
+  useEffect(() => {
+    if (defaultValue) {
+      form.reset({
+        searchQuery: defaultValue,
+      });
+    }
+  }, [defaultValue, form]);
+
+  const isClearable = form.getValues("searchQuery")?.length > 0;
 
   return (
     <Form {...form}>
@@ -71,7 +87,7 @@ export const SearchBar = ({
             </FormItem>
           )}
         />
-        {form.formState.isDirty && (
+        {isClearable && (
           <Button
             onClick={resetHandler}
             variant="outline"
