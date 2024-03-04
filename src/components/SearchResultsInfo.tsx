@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Skeleton } from "@/components/ui";
 
 type SearchResultsInfoProps = {
   total: number;
@@ -16,5 +17,12 @@ export const SearchResultsInfo = ({ total, city }: SearchResultsInfoProps) => (
         Change Location
       </Link>
     </span>
+  </div>
+);
+
+export const SearchResultsInfoSkeleton = () => (
+  <div className="flex items-end">
+    <Skeleton className="h-[28px] w-[270px]" />
+    <Skeleton className="h-4 w-28" />
   </div>
 );

@@ -1,8 +1,8 @@
 import {
   CuisinesFilter,
-  LoadingScreen,
   PaginationSelector,
   SearchBar,
+  SearchLoadingScreen,
   SearchResultCard,
   SearchResultsInfo,
   SortOptionDropdown,
@@ -48,7 +48,7 @@ export const SearchPage = () => {
           placeholder="Search by Cuisine or Restaurant Name"
         />
         {isLoading ? (
-          <LoadingScreen />
+          <SearchLoadingScreen />
         ) : (
           <>
             <div className="flex items-center justify-between">

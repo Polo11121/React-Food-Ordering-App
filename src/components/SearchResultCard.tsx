@@ -2,6 +2,7 @@ import { Restaurant } from "@/types";
 import { Link } from "react-router-dom";
 import { AspectRatio } from "@/components/ui/AspectRatio";
 import { Banknote, Clock, Dot } from "lucide-react";
+import { Skeleton } from "@/components/ui";
 
 type SearchResultCardProps = {
   restaurant: Restaurant;
@@ -44,4 +45,26 @@ export const SearchResultCard = ({ restaurant }: SearchResultCardProps) => (
       </div>
     </div>
   </Link>
+);
+
+export const SearchResultCardSkeleton = () => (
+  <div className="grid lg:grid-cols-[2fr_3fr] gap-5 group">
+    <AspectRatio ratio={16 / 6}>
+      <Skeleton className="rounded-md w-full h-full object-cover" />
+    </AspectRatio>
+    <div>
+      <Skeleton className="h-8 w-32 mb-2" />
+      <div className="grid md:grid-cols-2 gap-2">
+        <div className="flex gap-2">
+          <Skeleton className="h-4 w-12" />
+          <Skeleton className="h-4 w-12" />
+          <Skeleton className="h-4 w-12" />
+        </div>
+        <div className="flex flex-col gap-2 ">
+          <Skeleton className="h-4 w-20" />
+          <Skeleton className="h-4 w-48" />
+        </div>
+      </div>
+    </div>
+  </div>
 );

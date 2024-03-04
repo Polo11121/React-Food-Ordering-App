@@ -44,7 +44,7 @@ export const CuisinesFilter = ({
           };
 
           return (
-            <div className="flex">
+            <div className="flex" key={cuisine}>
               <input
                 type="checkbox"
                 id={`cuisine-${cuisine}`}
