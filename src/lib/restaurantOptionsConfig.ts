@@ -1,4 +1,4 @@
-export const cuisineList = [
+export const CUISINES_LIST = [
   "American",
   "BBQ",
   "Breakfast",

@@ -1,3 +1,4 @@
+export { CuisinesFilter } from "@/components/CuisinesFilter";
 export { Footer } from "@/components/Footer";
 export { Header } from "@/components/Header";
 export { Hero } from "@/components/Hero";

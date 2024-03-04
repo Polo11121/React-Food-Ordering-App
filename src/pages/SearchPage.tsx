@@ -1,59 +1,41 @@
-import { useParams } from "react-router";
-import { useSearchRestaurants } from "@/api/restaurantApi";
 import {
+  CuisinesFilter,
   LoadingScreen,
   PaginationSelector,
   SearchBar,
   SearchResultCard,
   SearchResultsInfo,
 } from "@/components";
-import { SearchRestaurantsSchema } from "@/validationSchemas/searchRestaurants";
-import { useSearchParams } from "react-router-dom";
+import { useSearch } from "@/hooks/useSearch";
 
 export type SearchState = {
   searchQuery: string;
 };
 
 export const SearchPage = () => {
-  const { city } = useParams() as { city: string };
-  const [searchParams, setSearchParams] = useSearchParams();
-  const searchQuery = searchParams.get("searchQuery") || "";
-
-  const { data, isLoading: isRestaurantsLoading } = useSearchRestaurants(
+  const {
+    isLoading,
     city,
-    searchParams
-  );
-
-  const setSearchQueryHandler = (searchFormData: SearchRestaurantsSchema) =>
-    setSearchParams((prevState) => {
-      const newParams = new URLSearchParams(prevState);
-      newParams.set("searchQuery", searchFormData.searchQuery);
-      newParams.delete("page");
-      return newParams;
-    });
-
-  const changePageHandler = (page: number) =>
-    setSearchParams((prevState) => {
-      const newParams = new URLSearchParams(prevState);
-      newParams.set("page", page.toString());
-
-      return newParams;
-    });
-
-  const resetHandler = () =>
-    setSearchParams((prevState) => {
-      const newState = new URLSearchParams(prevState);
-      newState.delete("searchQuery");
-
-      return newState;
-    });
-
-  const isLoading = isRestaurantsLoading || !data || !city;
+    searchQuery,
+    selectedCuisines,
+    data,
+    setCuisinesHandler,
+    setSearchQueryHandler,
+    changePageHandler,
+    resetHandler,
+    expandHandler,
+    isExpanded,
+  } = useSearch();
 
   return (
-    <div className="flex flex-col flex-1 lg:flex-row">
+    <div className="flex flex-col flex-1 lg:flex-row gap-4">
       <div id="cuisines-list" className="w-[250px]">
-        insert cuisines list here
+        <CuisinesFilter
+          selectedCuisines={selectedCuisines}
+          isExpanded={isExpanded}
+          onExpand={expandHandler}
+          onChange={setCuisinesHandler}
+        />
       </div>
       <div id="main-content" className="flex flex-col gap-5 flex-1">
         <SearchBar

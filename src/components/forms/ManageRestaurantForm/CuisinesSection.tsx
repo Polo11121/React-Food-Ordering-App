@@ -5,7 +5,7 @@ import {
   FormMessage,
   Skeleton,
 } from "@/components/ui";
-import { cuisineList } from "@/lib/restaurantOptionsConfig";
+import { CUISINES_LIST } from "@/lib/restaurantOptionsConfig";
 import { ManageRestaurantSchema } from "@/validationSchemas/manageRestaurant";
 import { useFormContext } from "react-hook-form";
 import {
@@ -30,7 +30,7 @@ export const CuisinesSection = () => {
         render={({ field }) => (
           <FormItem>
             <div className="grid md:grid-cols-5 gap-1">
-              {cuisineList.map((cuisine) => (
+              {CUISINES_LIST.map((cuisine) => (
                 <CuisineCheckbox
                   isDisabled={formState.isSubmitting}
                   key={cuisine}
@@ -54,7 +54,7 @@ export const CuisinesSectionSkeleton = () => (
       <Skeleton className="h-5 w-56" />
     </div>
     <div className="grid md:grid-cols-5 gap-x-1 gap-y-3">
-      {cuisineList.map((cuisine) => (
+      {CUISINES_LIST.map((cuisine) => (
         <CuisineCheckboxSkeleton key={cuisine} />
       ))}
     </div>
