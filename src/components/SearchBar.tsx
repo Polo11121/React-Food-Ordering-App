@@ -32,7 +32,7 @@ export const SearchBar = ({
   const form = useForm<SearchRestaurantsSchema>({
     resolver: zodResolver(searchRestaurantsSchema),
     defaultValues: {
-      searchQuery: defaultValue,
+      searchQuery: defaultValue || "",
     },
   });
 

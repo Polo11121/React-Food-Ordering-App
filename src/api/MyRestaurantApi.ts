@@ -21,9 +21,11 @@ export const useCreateMyRestaurant = () => {
       },
       method: "POST",
     });
+
     if (!response.ok) {
-      throw new Error("Failed to create restaurant");
+      throw new Error(`${response.status}`);
     }
+
     return response.json();
   };
 
@@ -58,9 +60,11 @@ export const useUpdateMyRestaurant = () => {
       },
       method: "PUT",
     });
+
     if (!response.ok) {
-      throw new Error("Failed to update restaurant");
+      throw new Error(`${response.status}`);
     }
+
     return response.json();
   };
 
@@ -93,7 +97,7 @@ export const useGetMyRestaurant = () => {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to fetch restaurant");
+      throw new Error(`${response.status}`);
     }
 
     return response.json();

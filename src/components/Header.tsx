@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { MainNav, MobileNav } from "@/components";
 
-export const Header = () => (
+type HeaderProps = {
+  showNav?: boolean;
+};
+export const Header = ({ showNav = true }: HeaderProps) => (
   <div className="border-b-2 border-b-orange-500 py-6">
     <div className="container flex justify-between items-center">
       <Link
@@ -10,12 +13,16 @@ export const Header = () => (
       >
         MernEats.com
       </Link>
-      <div className="md:hidden">
-        <MobileNav />
-      </div>
-      <div className="hidden md:block">
-        <MainNav />
-      </div>
+      {showNav && (
+        <>
+          <div className="md:hidden">
+            <MobileNav />
+          </div>
+          <div className="hidden md:block">
+            <MainNav />
+          </div>
+        </>
+      )}
     </div>
   </div>
 );

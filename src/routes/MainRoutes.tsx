@@ -8,6 +8,7 @@ const AuthCallbackPage = lazyLoad("AuthCallbackPage");
 const SearchPage = lazyLoad("SearchPage");
 const UserProfilePage = lazyLoad("UserProfilePage");
 const ManageRestaurantPage = lazyLoad("ManageRestaurantPage");
+const DetailPage = lazyLoad("DetailPage");
 
 export const MainRoutes = () => (
   <Routes>
@@ -15,6 +16,7 @@ export const MainRoutes = () => (
       <Route path="/" element={<HomePage />} />
       <Route path="/auth-callback" element={<AuthCallbackPage />} />
       <Route path="/search/:city" element={<SearchPage />} />
+      <Route path="/detail/:id" element={<DetailPage />} />
       <Route element={<ProtectedRoute />}>
         <Route path="/user-profile" element={<UserProfilePage />} />
         <Route path="/manage-restaurant" element={<ManageRestaurantPage />} />

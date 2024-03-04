@@ -32,7 +32,7 @@ export const useCreateMyUser = () => {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to create user");
+      throw new Error(`${response.status}`);
     }
 
     return response.json();
@@ -62,7 +62,7 @@ export const useUpdateMyUser = () => {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to update user");
+      throw new Error(`${response.status}`);
     }
 
     return response.json();
@@ -96,7 +96,7 @@ export const useGetMyUser = () => {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to fetch user");
+      throw new Error(`${response.status}`);
     }
 
     return response.json();

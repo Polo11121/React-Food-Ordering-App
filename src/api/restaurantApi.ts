@@ -14,7 +14,7 @@ export const useSearchRestaurants = (
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch restaurants");
+      throw new Error(`${response.status}`);
     }
 
     return response.json();
@@ -27,12 +27,12 @@ export const useSearchRestaurants = (
   });
 };
 
-export const useGetRestaurantById = async (id?: string) => {
+export const useGetRestaurantById = (id?: string) => {
   const getRestaurantById = async (): Promise<Restaurant> => {
     const response = await fetch(`${API_BASE_URL}/api/restaurant/${id}`);
 
     if (!response.ok) {
-      throw new Error("Failed to fetch restaurant");
+      throw new Error(`${response.status}`);
     }
 
     return response.json();

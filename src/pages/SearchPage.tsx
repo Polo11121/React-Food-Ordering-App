@@ -59,7 +59,7 @@ export const SearchPage = () => {
               />
             </div>
             {data.data.map((restaurant) => (
-              <SearchResultCard restaurant={restaurant} />
+              <SearchResultCard restaurant={restaurant} key={restaurant._id} />
             ))}
             {data.pagination.totalPages > 1 && (
               <PaginationSelector
