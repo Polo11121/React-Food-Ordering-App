@@ -11,4 +11,5 @@ export { PaginationSelector } from "@/components/PaginationSelector";
 export { SearchBar } from "@/components/SearchBar";
 export { SearchResultCard } from "@/components/SearchResultCard";
 export { SearchResultsInfo } from "@/components/SearchResultsInfo";
+export { SortOptionDropdown } from "@/components/SortOptionDropdown";
 export { UsernameMenu } from "@/components/UsernameMenu";

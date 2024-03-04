@@ -8,6 +8,7 @@ export const useSearch = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { city } = useParams() as { city: string };
   const [searchParams, setSearchParams] = useSearchParams();
+  const sortOption = searchParams.get("sortOption") || "bestMatch";
   const searchQuery = searchParams.get("searchQuery") || "";
   const selectedCuisines =
     searchParams.get("selectedCuisines")?.split(",") || [];
@@ -49,6 +50,15 @@ export const useSearch = () => {
       return newParams;
     });
 
+  const setSortOptionHandler = (sortOption: string) =>
+    setSearchParams((prevState) => {
+      const newParams = new URLSearchParams(prevState);
+      newParams.set("sortOption", sortOption);
+      newParams.delete("page");
+
+      return newParams;
+    });
+
   const expandHandler = () => setIsExpanded((prevState) => !prevState);
 
   const resetHandler = () =>
@@ -73,5 +83,7 @@ export const useSearch = () => {
     resetHandler,
     isExpanded,
     expandHandler,
+    setSortOptionHandler,
+    sortOption,
   };
 };

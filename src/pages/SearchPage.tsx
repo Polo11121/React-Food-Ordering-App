@@ -5,6 +5,7 @@ import {
   SearchBar,
   SearchResultCard,
   SearchResultsInfo,
+  SortOptionDropdown,
 } from "@/components";
 import { useSearch } from "@/hooks/useSearch";
 
@@ -25,6 +26,8 @@ export const SearchPage = () => {
     resetHandler,
     expandHandler,
     isExpanded,
+    setSortOptionHandler,
+    sortOption,
   } = useSearch();
 
   return (
@@ -48,7 +51,13 @@ export const SearchPage = () => {
           <LoadingScreen />
         ) : (
           <>
-            <SearchResultsInfo city={city} total={data.pagination.total} />
+            <div className="flex items-center justify-between">
+              <SearchResultsInfo city={city} total={data.pagination.total} />
+              <SortOptionDropdown
+                onChange={setSortOptionHandler}
+                sortOption={sortOption}
+              />
+            </div>
             {data.data.map((restaurant) => (
               <SearchResultCard restaurant={restaurant} />
             ))}

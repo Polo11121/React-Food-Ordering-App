@@ -26,3 +26,18 @@ export const CUISINES_LIST = [
   "Tapas",
   "Vegan",
 ];
+
+export const SORT_OPTIONS = [
+  {
+    label: "Best Match",
+    value: "bestMatch",
+  },
+  {
+    label: "Delivery price",
+    value: "deliveryPrice",
+  },
+  {
+    label: "Estimated delivery time",
+    value: "estimatedDeliveryTime",
+  },
+];
