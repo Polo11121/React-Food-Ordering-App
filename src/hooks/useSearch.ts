@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchRestaurants } from "@/api/restaurantApi";
 import { RestaurantSearch } from "@/types";
 import { SearchRestaurantsSchema } from "@/validationSchemas/searchRestaurants";
 import { useParams, useSearchParams } from "react-router-dom";
+import useMediaQuery from "beautiful-react-hooks/useMediaQuery";
 
 export const useSearch = () => {
+  const isSmall = useMediaQuery("(max-width: 48rem)");
   const [isExpanded, setIsExpanded] = useState(false);
   const { city } = useParams() as { city: string };
   const [searchParams, setSearchParams] = useSearchParams();
@@ -68,6 +70,12 @@ export const useSearch = () => {
 
       return newState;
     });
+
+  useEffect(() => {
+    if (isSmall) {
+      setIsExpanded(false);
+    }
+  }, [isSmall]);
 
   const isLoading = isRestaurantsLoading || !data || !city;
 
