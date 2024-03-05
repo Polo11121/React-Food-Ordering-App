@@ -10,12 +10,8 @@ export const UserProfilePage = () => {
   } = useGetMyUser();
   const { mutateAsync, isPending } = useUpdateMyUser();
 
-  if (isLoading || !isFetchedAfterMount) {
+  if (isLoading || !isFetchedAfterMount || !myUser) {
     return <UserProfileSkeleton />;
-  }
-
-  if (!myUser) {
-    return <span>Unable to load user profile. Please try again later.</span>;
   }
 
   return (
