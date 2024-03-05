@@ -20,29 +20,37 @@ import { User } from "@/types";
 import { UseMutateAsyncFunction } from "@tanstack/react-query";
 
 type UserProfileFormProps = {
-  onSubmit: UseMutateAsyncFunction<
-    User,
-    Error,
-    Omit<
-      {
-        name: string;
-        addressLine1: string;
-        city: string;
-        country: string;
-        email?: string | undefined;
-      },
-      "email"
-    >,
-    unknown
-  >;
+  onSubmit:
+    | UseMutateAsyncFunction<
+        User,
+        Error,
+        Omit<
+          {
+            name: string;
+            addressLine1: string;
+            city: string;
+            country: string;
+            email?: string | undefined;
+          },
+          "email"
+        >,
+        unknown
+      >
+    | ((data: UpdateUserSchema) => void);
   isLoading: boolean;
   user?: User;
+  title?: string;
+  buttonText?: string;
+  isDisabled?: boolean;
 };
 
 export const UserProfileForm = ({
   onSubmit,
   isLoading,
   user,
+  title = "Update Profile Form",
+  buttonText = "Submit",
+  isDisabled = true,
 }: UserProfileFormProps) => {
   const form = useForm<UpdateUserSchema>({
     resolver: zodResolver(updateUserSchema),
@@ -66,7 +74,8 @@ export const UserProfileForm = ({
     }
   }, [user, form]);
 
-  const isDisabled = !Object.keys(form.formState.dirtyFields).length;
+  const isButtonDisabled =
+    !Object.keys(form.formState.dirtyFields).length && isDisabled;
 
   return (
     <Form {...form}>
@@ -76,7 +85,7 @@ export const UserProfileForm = ({
       >
         <div className="space-y-3">
           <div>
-            <h2 className="text-2xl font-bold">User Profile Form</h2>
+            <h2 className="text-2xl font-bold">{title}</h2>
             <FormDescription>
               View and change your profile information here
             </FormDescription>
@@ -161,12 +170,12 @@ export const UserProfileForm = ({
           </div>
         </div>
         <Button
-          disabled={isDisabled}
+          disabled={isButtonDisabled}
           type="submit"
           isLoading={isLoading}
           className="bg-orange-500"
         >
-          Submit
+          {buttonText}
         </Button>
       </form>
     </Form>

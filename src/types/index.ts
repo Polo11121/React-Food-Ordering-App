@@ -46,3 +46,18 @@ export type CartItem = {
   price: number;
   quantity: number;
 };
+
+export type CheckoutSessionRequest = {
+  cartItems: {
+    menuItemId: string;
+    quantity: string;
+    name: string;
+  }[];
+  deliveryDetails: {
+    name: string;
+    email: string;
+    addressLine1: string;
+    city: string;
+  };
+  restaurantId: string;
+};

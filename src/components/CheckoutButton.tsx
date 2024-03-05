@@ -1,13 +1,27 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useLocation } from "react-router-dom";
-import { Button } from "@/components/ui";
+import { Button, Dialog, DialogContent, DialogTrigger } from "@/components/ui";
+import { UserProfileForm } from "@/components/forms";
+import { useGetMyUser } from "@/api/myUserApi";
+import { UpdateUserSchema } from "@/validationSchemas/updateUserProfile";
 
 type CheckoutButtonProps = {
   isDisabled?: boolean;
+  onCheckout: (data: UpdateUserSchema) => void;
+  isLoading?: boolean;
 };
 
-export const CheckoutButton = ({ isDisabled }: CheckoutButtonProps) => {
-  const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
+export const CheckoutButton = ({
+  isDisabled,
+  onCheckout,
+  isLoading,
+}: CheckoutButtonProps) => {
+  const { data: user, isLoading: isUserLoading } = useGetMyUser();
+  const {
+    isAuthenticated,
+    loginWithRedirect,
+    isLoading: isAuthLoading,
+  } = useAuth0();
   const { pathname } = useLocation();
 
   const loginHandler = async () =>
@@ -22,12 +36,26 @@ export const CheckoutButton = ({ isDisabled }: CheckoutButtonProps) => {
   }
 
   return (
-    <Button
-      className="bg-orange-500 flex-1"
-      disabled={isDisabled}
-      isLoading={isLoading}
-    >
-      {isDisabled ? "Add items to cart" : "Checkout"}
-    </Button>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          className="bg-orange-500 flex-1"
+          disabled={isDisabled}
+          isLoading={isAuthLoading}
+        >
+          {isDisabled ? "Add items to cart" : "Checkout"}
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-[425px] md:min-w-[700px] bg-gray-50">
+        <UserProfileForm
+          user={user}
+          onSubmit={onCheckout}
+          isLoading={Boolean(isUserLoading || isLoading)}
+          title="Confirm Delivery Details"
+          buttonText="Continue to Payment"
+          isDisabled={false}
+        />
+      </DialogContent>
+    </Dialog>
   );
 };

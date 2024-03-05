@@ -11,6 +11,8 @@ import {
 } from "@/components/ui";
 import { Trash } from "lucide-react";
 import { CheckoutButton } from "@/components";
+import { UpdateUserSchema } from "@/validationSchemas/updateUserProfile";
+import { useCreateCheckoutSession } from "@/api/orderApi";
 
 type OrderSummaryProps = {
   restaurant: Restaurant;
@@ -23,12 +25,33 @@ export const OrderSummary = ({
   restaurant,
   onRemoveItem,
 }: OrderSummaryProps) => {
+  const { mutateAsync: createSession, isPending } = useCreateCheckoutSession();
+
   const totalCost = (
     cartItems.reduce(
       (acc, { price, quantity }) => acc + price * quantity,
       restaurant.deliveryPrice
     ) / 100
   ).toFixed(2);
+
+  const checkoutHandler = async (data: UpdateUserSchema) => {
+    const checkoutData = {
+      cartItems: cartItems.map((item) => ({
+        menuItemId: item._id,
+        quantity: item.quantity.toString(),
+        name: item.name,
+      })),
+      deliveryDetails: {
+        name: data.name,
+        email: data.email as string,
+        addressLine1: data.addressLine1,
+        city: data.city,
+      },
+      restaurantId: restaurant._id,
+    };
+
+    await createSession(checkoutData);
+  };
 
   return (
     <Card>
@@ -69,7 +92,11 @@ export const OrderSummary = ({
         <Separator />
       </CardContent>
       <CardFooter>
-        <CheckoutButton isDisabled={!cartItems.length} />
+        <CheckoutButton
+          isLoading={isPending}
+          isDisabled={!cartItems.length}
+          onCheckout={checkoutHandler}
+        />
       </CardFooter>
     </Card>
   );
