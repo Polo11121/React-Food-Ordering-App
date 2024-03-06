@@ -16,6 +16,7 @@ export const SearchResultCard = ({ restaurant }: SearchResultCardProps) => (
     <AspectRatio ratio={16 / 6}>
       <img
         src={restaurant.imageUrl}
+        alt={`${restaurant.name} image`}
         className="rounded-md w-full h-full object-cover"
       />
     </AspectRatio>

@@ -23,6 +23,7 @@ export const DetailPage = () => {
         <img
           className="rounded-md object-cover h-full w-full"
           src={restaurant.imageUrl}
+          alt={`${restaurant.name} image`}
         />
       </AspectRatio>
       <div className="grid md:grid-cols-[4fr_2fr] gap-5 md:px-32">

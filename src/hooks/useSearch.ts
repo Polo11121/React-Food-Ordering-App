@@ -24,7 +24,6 @@ export const useSearch = () => {
     setSearchParams((prevState) => {
       const newParams = new URLSearchParams(prevState);
 
-      console.log(cuisines);
       if (cuisines.length) {
         newParams.set("selectedCuisines", cuisines.join(","));
       } else {

@@ -15,7 +15,11 @@ export const ErrorScreen = ({ error, resetErrorBoundary }: FallbackProps) => {
     <div className="flex flex-col min-h-screen">
       <Header showNav={false} />
       <div className="flex flex-col flex-1 items-center justify-center">
-        <img src="/errorPizza.png" className="w-96 h-96" />
+        <img
+          src="/errorPizza.png"
+          className="w-96 h-96"
+          alt="error pizza image"
+        />
         <div className="text-center leading-none -mt-10">
           <h1 className="text-[4rem] font-semibold text-orange-500 line">
             {error.message}

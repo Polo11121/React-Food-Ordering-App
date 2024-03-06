@@ -9,6 +9,7 @@ const SearchPage = lazyLoad("SearchPage");
 const UserProfilePage = lazyLoad("UserProfilePage");
 const ManageRestaurantPage = lazyLoad("ManageRestaurantPage");
 const DetailPage = lazyLoad("DetailPage");
+const OrderStatusPage = lazyLoad("OrderStatusPage");
 
 export const MainRoutes = () => (
   <Routes>
@@ -18,6 +19,7 @@ export const MainRoutes = () => (
       <Route path="/search/:city" element={<SearchPage />} />
       <Route path="/detail/:id" element={<DetailPage />} />
       <Route element={<ProtectedRoute />}>
+        <Route path="/order-status" element={<OrderStatusPage />} />
         <Route path="/user-profile" element={<UserProfilePage />} />
         <Route path="/manage-restaurant" element={<ManageRestaurantPage />} />
       </Route>

@@ -7,4 +7,8 @@ export const NAVBAR_LINKS = [
     label: "Manage Restaurant",
     path: "/manage-restaurant",
   },
+  {
+    label: "Order Status",
+    path: "/order-status",
+  },
 ];

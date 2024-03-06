@@ -11,6 +11,9 @@ export { MainNav } from "@/components/MainNav";
 export { MenuItem, MenuItemSkeleton } from "@/components/MenuItem";
 export { MobileNav } from "@/components/MobileNav";
 export { MobileNavLinks } from "@/components/MobileNavLinks";
+export { OrderItem } from "@/components/OrderItem";
+export { OrderStatusDetail } from "@/components/OrderStatusDetail";
+export { OrderStatusHeader } from "@/components/OrderStatusHeader";
 export { PaginationSelector } from "@/components/PaginationSelector";
 export {
   RestaurantInfo,
