@@ -14,7 +14,9 @@ export {
 } from "@/components/ui/OrderSummary";
 export * from "@/components/ui/Pagination";
 export { Progress } from "@/components/ui/Progress";
+export * from "@/components/ui/Select";
 export { Separator } from "@/components/ui/Separator";
 export * from "@/components/ui/Sheet";
 export { Skeleton } from "@/components/ui/Skeleton";
 export { Toaster } from "@/components/ui/Sonner";
+export * from "@/components/ui/Tabs";

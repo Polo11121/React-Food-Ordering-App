@@ -1,5 +1,5 @@
 import { env } from "@/lib/env";
-import { Restaurant } from "@/types";
+import { Order, OrderStatus, Restaurant } from "@/types";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -106,5 +106,78 @@ export const useGetMyRestaurant = () => {
   return useQuery({
     queryKey: ["myRestaurant"],
     queryFn: getMyRestaurant,
+  });
+};
+
+export const useGetMyRestaurantsOrders = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const getMyRestaurantOrders = async (): Promise<Order[]> => {
+    const accessToken = await getAccessTokenSilently();
+    const response = await fetch(`${API_BASE_URL}/api/my/restaurant/order`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`${response.status}`);
+    }
+
+    return response.json();
+  };
+
+  return useQuery({
+    queryKey: ["myRestaurantOrders"],
+    queryFn: getMyRestaurantOrders,
+  });
+};
+
+export const useUpdateMyRestaurantOrderStatus = () => {
+  const queryClient = useQueryClient();
+  const { getAccessTokenSilently } = useAuth0();
+
+  const updateMyRestaurantOrderStatus = async ({
+    orderId,
+    status,
+  }: {
+    orderId: string;
+    status: OrderStatus;
+  }) => {
+    const accessToken = await getAccessTokenSilently();
+
+    const response = await fetch(
+      `${API_BASE_URL}/api/my/restaurant/order/${orderId}/status`,
+      {
+        body: JSON.stringify({ status }),
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        method: "PATCH",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`${response.status}`);
+    }
+
+    return response.json();
+  };
+
+  return useMutation({
+    mutationFn: updateMyRestaurantOrderStatus,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["myRestaurantOrders"],
+      });
+
+      toast.success("Order status updated!", {
+        style: {
+          color: "rgb(249 115 22)",
+        },
+      });
+    },
+    onError: () => toast.error("Failed to update order status!"),
   });
 };

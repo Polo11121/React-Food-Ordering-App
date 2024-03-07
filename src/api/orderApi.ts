@@ -61,6 +61,7 @@ export const useGetMyOrders = () => {
 
   return useQuery({
     queryKey: ["myOrders"],
+    refetchInterval: 5000,
     queryFn: getMyOrders,
   });
 };
